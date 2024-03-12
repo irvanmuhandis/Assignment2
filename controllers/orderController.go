@@ -13,6 +13,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Interface to contain all method
 type OrderMethod interface {
 	CreateOrder(ctx *gin.Context)
 	GetOrders(ctx *gin.Context)
@@ -20,37 +21,44 @@ type OrderMethod interface {
 	DeleteOrder(ctx *gin.Context)
 }
 
+// Object order controller
 type OrderController struct{}
 
+// Parameter item in create method
 type ItemParam struct {
-	ItemCode    int    `json:"item_code" example:"1"`
+	ItemCode    int    `json:"itemCode" example:"1"`
 	Description string `json:"description" example:"Sabun"`
 	Quantity    int    `json:"quantity" example:"12"`
 }
 
-type UpdateItemParam struct {
-	LineItemId  int    `json:"lineItemId" example:"1"`
-	ItemCode    int    `json:"item_code" example:"1"`
-	Description string `json:"description" example:"Sabun"`
-	Quantity    int    `json:"quantity" example:"12"`
-}
-
+// Parameter order in create method
 type CreateParam struct {
-	OrderedAt    time.Time `json:"ordered_at" example:"2024-03-11T12:34:56Z"`
-	CustomerName string    `json:"customer_name" example:"Irvan"`
+	OrderedAt    time.Time `json:"orderedAt" example:"2024-03-11T12:34:56Z"`
+	CustomerName string    `json:"customerName" example:"Irvan"`
 	Items        []ItemParam
 }
 
+// Parameter order in update method
 type UpdateParam struct {
-	OrderedAt    time.Time `json:"ordered_at" example:"2024-03-11T12:34:56Z"`
-	CustomerName string    `json:"customer_name" example:"Irvan"`
+	OrderedAt    time.Time `json:"orderedAt" example:"2024-03-11T12:34:56Z"`
+	CustomerName string    `json:"customerName" example:"Muhandis"`
 	Items        []UpdateItemParam
 }
 
+// Parameter item in update method
+type UpdateItemParam struct {
+	LineItemId  int    `json:"lineItemId" example:"1"`
+	ItemCode    int    `json:"itemCode" example:"1"`
+	Description string `json:"description" example:"Sampo"`
+	Quantity    int    `json:"quantity" example:"1"`
+}
+
+// Error response
 type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
+// Success response
 type SuccessResponse struct {
 	Message string `json:"message"`
 }
@@ -68,6 +76,9 @@ type SuccessResponse struct {
 func (c OrderController) CreateOrder(ctx *gin.Context) {
 	var newOrder model.Order
 	msg := ErrorResponse{}
+	db := database.GetDB()
+
+	//Bind body param
 	err := ctx.ShouldBindJSON(&newOrder)
 	if err != nil {
 		msg.Message = err.Error()
@@ -75,15 +86,16 @@ func (c OrderController) CreateOrder(ctx *gin.Context) {
 		return
 	}
 
-	db := database.GetDB()
+	//Create data order
 	errs := db.Create(&newOrder).Error
-
 	if errs != nil {
 		msg.Message = errs.Error()
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, msg)
 		fmt.Println("Error creating product data:", err)
 		return
 	}
+
+	//Display new order
 	ctx.JSON(http.StatusCreated, newOrder)
 }
 
@@ -99,8 +111,9 @@ func (c OrderController) GetOrders(ctx *gin.Context) {
 	db := database.GetDB()
 	msg := ErrorResponse{}
 	orders := []model.Order{}
-	err := db.Preload("Items").Find(&orders).Error
 
+	//Get all order
+	err := db.Preload("Items").Find(&orders).Error
 	if err != nil {
 		msg.Message = err.Error()
 		ctx.AbortWithStatusJSON(http.StatusNotFound, msg)
@@ -108,6 +121,7 @@ func (c OrderController) GetOrders(ctx *gin.Context) {
 		return
 	}
 
+	//Display all order
 	ctx.JSON(http.StatusOK, orders)
 
 }
@@ -138,6 +152,15 @@ func (c OrderController) UpdateOrder(ctx *gin.Context) {
 	if errs != nil {
 		msg.Message = errs.Error()
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, msg)
+		return
+	}
+
+	//check if order exist
+	errCheck := db.Preload("Items").First(&orderModel, "order_id=?", orderID).Error
+	if errCheck != nil {
+		msg.Message = errCheck.Error()
+		ctx.AbortWithStatusJSON(http.StatusNotFound, msg)
+		fmt.Println("Error get data ", errCheck.Error())
 		return
 	}
 
@@ -206,7 +229,7 @@ func (c OrderController) UpdateOrder(ctx *gin.Context) {
 		}
 	}
 
-	//Display success
+	//Display success message
 	success := SuccessResponse{
 		Message: fmt.Sprintf("Data order with id %d updated successfully", orderID),
 	}
@@ -233,12 +256,22 @@ func (c OrderController) DeleteOrder(ctx *gin.Context) {
 	order := model.Order{}
 	item := model.Item{}
 	_ = item
+
+	// Get order Id
 	var ID = ctx.Param("orderId")
 	orderID, errs := strconv.Atoi(ID)
-
 	if errs != nil {
 		msg.Message = errs.Error()
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, msg)
+		return
+	}
+
+	//check if order exist
+	errCheck := db.Preload("Items").First(&order, "order_id=?", orderID).Error
+	if errCheck != nil {
+		msg.Message = errCheck.Error()
+		ctx.AbortWithStatusJSON(http.StatusNotFound, msg)
+		fmt.Println("Error get data ", errCheck.Error())
 		return
 	}
 
@@ -271,6 +304,8 @@ func (c OrderController) DeleteOrder(ctx *gin.Context) {
 			return
 		}
 	}
+
+	// Display success message
 	delResp := SuccessResponse{}
 	delResp.Message = fmt.Sprintf("car with id %v has been succesfully deleted", orderID)
 	ctx.JSON(http.StatusOK, delResp)

@@ -23,9 +23,12 @@ import (
 // @externalDocs.description  OpenAPI
 // @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
+	//Start database
 	database.StartDB()
 	PORT := ":8080"
 	fmt.Println("Server Start at PORT : ", PORT)
+
+	//Run webservice
 	err := router.MyRouter().Run(PORT)
 	if err != nil {
 		log.Fatal(err)

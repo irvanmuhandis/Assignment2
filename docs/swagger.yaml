@@ -2,14 +2,14 @@ basePath: /
 definitions:
   controllers.CreateParam:
     properties:
-      customer_name:
+      customerName:
         example: Irvan
         type: string
       items:
         items:
           $ref: '#/definitions/controllers.ItemParam'
         type: array
-      ordered_at:
+      orderedAt:
         example: "2024-03-11T12:34:56Z"
         type: string
     type: object
@@ -23,7 +23,7 @@ definitions:
       description:
         example: Sabun
         type: string
-      item_code:
+      itemCode:
         example: 1
         type: integer
       quantity:
@@ -38,52 +38,30 @@ definitions:
   controllers.UpdateItemParam:
     properties:
       description:
-        example: Sabun
+        example: Sampo
         type: string
-      item_code:
+      itemCode:
         example: 1
         type: integer
       lineItemId:
         example: 1
         type: integer
       quantity:
-        example: 12
+        example: 1
         type: integer
     type: object
   controllers.UpdateParam:
     properties:
-      customer_name:
-        example: Irvan
+      customerName:
+        example: Muhandis
         type: string
       items:
         items:
           $ref: '#/definitions/controllers.UpdateItemParam'
         type: array
-      ordered_at:
+      orderedAt:
         example: "2024-03-11T12:34:56Z"
         type: string
-    type: object
-  controllers.carParam:
-    properties:
-      brand:
-        example: Honda
-        type: string
-      model:
-        example: Racing
-        type: string
-      price:
-        type: integer
-    type: object
-  model.Car:
-    properties:
-      brand:
-        type: string
-      car_id:
-        type: integer
-      model:
-        type: string
-      price:
-        type: integer
     type: object
   model.Item:
     properties:
@@ -117,47 +95,17 @@ externalDocs:
 host: localhost:8080
 info:
   contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: This is a sample server celler server.
+    email: irvanmuhandis@gmail.com
+    name: M.Irvan Muhandis
+    url: https://wa.me/6285701514915
+  description: This is a REST API created to fullfil assignment class
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: Swagger Example API
+  title: Assignment 2 REST API M.Irvan Muhandis
   version: "1.0"
 paths:
-  /car:
-    post:
-      consumes:
-      - application/json
-      description: Creating Car based on input
-      parameters:
-      - description: Car
-        in: body
-        name: car
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.carParam'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            items:
-              $ref: '#/definitions/model.Car'
-            type: array
-        "400":
-          description: Bad Request
-          schema: {}
-        "406":
-          description: Not Acceptable
-          schema: {}
-      summary: Creating car
-      tags:
-      - accounts
   /orders:
     get:
       description: Fetching all order data

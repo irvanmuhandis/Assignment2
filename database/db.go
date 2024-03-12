@@ -31,7 +31,7 @@ func StartDB() {
 	db, err = gorm.Open(postgres.Open(psqInfo), &gorm.Config{})
 	fmt.Println(psqInfo)
 	if err != nil {
-		log.Fatal("error connecting to database : ", err)
+		log.Fatal("Error connecting to database : ", err)
 	}
 	db.Debug().AutoMigrate(model.Order{}, model.Item{})
 }

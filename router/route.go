@@ -9,9 +9,11 @@ import (
 )
 
 func MyRouter() *gin.Engine {
+	//declare router and controller
 	router := gin.Default()
 	controller := controllers.OrderController{}
 
+	//url route
 	order := router.Group("/orders")
 	{
 		order.GET("", controller.GetOrders)

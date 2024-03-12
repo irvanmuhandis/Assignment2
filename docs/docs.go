@@ -11,9 +11,9 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
+            "name": "M.Irvan Muhandis",
+            "url": "https://wa.me/6285701514915",
+            "email": "irvanmuhandis@gmail.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -24,51 +24,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/car": {
-            "post": {
-                "description": "Creating Car based on input",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "accounts"
-                ],
-                "summary": "Creating car",
-                "parameters": [
-                    {
-                        "description": "Car",
-                        "name": "car",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.carParam"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/model.Car"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {}
-                    },
-                    "406": {
-                        "description": "Not Acceptable",
-                        "schema": {}
-                    }
-                }
-            }
-        },
         "/orders": {
             "get": {
                 "description": "Fetching all order data",
@@ -248,7 +203,7 @@ const docTemplate = `{
         "controllers.CreateParam": {
             "type": "object",
             "properties": {
-                "customer_name": {
+                "customerName": {
                     "type": "string",
                     "example": "Irvan"
                 },
@@ -258,7 +213,7 @@ const docTemplate = `{
                         "$ref": "#/definitions/controllers.ItemParam"
                     }
                 },
-                "ordered_at": {
+                "orderedAt": {
                     "type": "string",
                     "example": "2024-03-11T12:34:56Z"
                 }
@@ -279,7 +234,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Sabun"
                 },
-                "item_code": {
+                "itemCode": {
                     "type": "integer",
                     "example": 1
                 },
@@ -302,9 +257,9 @@ const docTemplate = `{
             "properties": {
                 "description": {
                     "type": "string",
-                    "example": "Sabun"
+                    "example": "Sampo"
                 },
-                "item_code": {
+                "itemCode": {
                     "type": "integer",
                     "example": 1
                 },
@@ -314,16 +269,16 @@ const docTemplate = `{
                 },
                 "quantity": {
                     "type": "integer",
-                    "example": 12
+                    "example": 1
                 }
             }
         },
         "controllers.UpdateParam": {
             "type": "object",
             "properties": {
-                "customer_name": {
+                "customerName": {
                     "type": "string",
-                    "example": "Irvan"
+                    "example": "Muhandis"
                 },
                 "items": {
                     "type": "array",
@@ -331,42 +286,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/controllers.UpdateItemParam"
                     }
                 },
-                "ordered_at": {
+                "orderedAt": {
                     "type": "string",
                     "example": "2024-03-11T12:34:56Z"
-                }
-            }
-        },
-        "controllers.carParam": {
-            "type": "object",
-            "properties": {
-                "brand": {
-                    "type": "string",
-                    "example": "Honda"
-                },
-                "model": {
-                    "type": "string",
-                    "example": "Racing"
-                },
-                "price": {
-                    "type": "integer"
-                }
-            }
-        },
-        "model.Car": {
-            "type": "object",
-            "properties": {
-                "brand": {
-                    "type": "string"
-                },
-                "car_id": {
-                    "type": "integer"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "integer"
                 }
             }
         },
@@ -428,8 +350,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Swagger Example API",
-	Description:      "This is a sample server celler server.",
+	Title:            "Assignment 2 REST API M.Irvan Muhandis",
+	Description:      "This is a REST API created to fullfil assignment class",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
