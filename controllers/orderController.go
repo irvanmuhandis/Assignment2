@@ -307,7 +307,7 @@ func (c OrderController) DeleteOrder(ctx *gin.Context) {
 
 	// Display success message
 	delResp := SuccessResponse{}
-	delResp.Message = fmt.Sprintf("car with id %v has been succesfully deleted", orderID)
+	delResp.Message = fmt.Sprintf("Data order with id %v has been succesfully deleted", orderID)
 	ctx.JSON(http.StatusOK, delResp)
 
 }
