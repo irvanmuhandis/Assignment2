@@ -1,0 +1,279 @@
+basePath: /
+definitions:
+  controllers.CreateParam:
+    properties:
+      customer_name:
+        example: Irvan
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/controllers.ItemParam'
+        type: array
+      ordered_at:
+        example: "2024-03-11T12:34:56Z"
+        type: string
+    type: object
+  controllers.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.ItemParam:
+    properties:
+      description:
+        example: Sabun
+        type: string
+      item_code:
+        example: 1
+        type: integer
+      quantity:
+        example: 12
+        type: integer
+    type: object
+  controllers.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.UpdateItemParam:
+    properties:
+      description:
+        example: Sabun
+        type: string
+      item_code:
+        example: 1
+        type: integer
+      lineItemId:
+        example: 1
+        type: integer
+      quantity:
+        example: 12
+        type: integer
+    type: object
+  controllers.UpdateParam:
+    properties:
+      customer_name:
+        example: Irvan
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/controllers.UpdateItemParam'
+        type: array
+      ordered_at:
+        example: "2024-03-11T12:34:56Z"
+        type: string
+    type: object
+  controllers.carParam:
+    properties:
+      brand:
+        example: Honda
+        type: string
+      model:
+        example: Racing
+        type: string
+      price:
+        type: integer
+    type: object
+  model.Car:
+    properties:
+      brand:
+        type: string
+      car_id:
+        type: integer
+      model:
+        type: string
+      price:
+        type: integer
+    type: object
+  model.Item:
+    properties:
+      description:
+        type: string
+      item_code:
+        type: integer
+      item_id:
+        type: integer
+      order_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  model.Order:
+    properties:
+      customer_name:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/model.Item'
+        type: array
+      order_id:
+        type: integer
+      ordered_at:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /car:
+    post:
+      consumes:
+      - application/json
+      description: Creating Car based on input
+      parameters:
+      - description: Car
+        in: body
+        name: car
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.carParam'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/model.Car'
+            type: array
+        "400":
+          description: Bad Request
+          schema: {}
+        "406":
+          description: Not Acceptable
+          schema: {}
+      summary: Creating car
+      tags:
+      - accounts
+  /orders:
+    get:
+      description: Fetching all order data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Order'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Get list of Order
+      tags:
+      - orders
+    post:
+      consumes:
+      - application/json
+      description: Creating Order based on input
+      parameters:
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.CreateParam'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Creating Order
+      tags:
+      - orders
+  /orders/{orderId}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a specific order data
+      parameters:
+      - description: Order ID
+        in: path
+        name: orderId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Delete Order
+      tags:
+      - orders
+    put:
+      consumes:
+      - application/json
+      description: Update a specific order data
+      parameters:
+      - description: Order ID
+        in: path
+        name: orderId
+        required: true
+        type: integer
+      - description: Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.UpdateParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Update Order
+      tags:
+      - orders
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
