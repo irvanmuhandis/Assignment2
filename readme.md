@@ -21,16 +21,25 @@ Tugas ini mengenai pembuatan REST API dengan menggunakan bahasa golang. Pada pro
 - Swagger
 - Database Postgress
 
-## Yang Perlu Diperhatikan
-
-Pada saat menyambungkan ke database Potgress, pastikan memiliki pengaturan sebagai berikut : 
-
-```
-const (
-	host     = "localhost"
-	port     = "5432"
-	user     = "postgres"
-	password = "1234"
-	dbname   = "postgres"
-)
-```
+## Cara Menjalankan
+1. Buka direktori projek
+2. Pastikan Konfigurasi postgres sesuai dengan konfigurasi dibawah ini :
+   ```
+	const (
+		host     = "localhost"
+		port     = "5432"
+		user     = "postgres"
+		password = "1234"
+		dbname   = "postgres"
+	)
+	```
+	Bila berbeda maka ubah code di ``database/db.go``
+3. Buka PgAdmin
+4. Masuk server dan isikan password agar koneksi pada database bisa terhubung
+5. Jalankan aplikasi dengan perintah
+   ```
+	go run main.go
+	// atau
+	go run .
+   ```
+6. Buka dokumentasi swagger di http://localhost:8080/swagger/index.html
